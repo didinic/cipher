@@ -1,5 +1,4 @@
-def vigenere_encode(plaintext: str, key: str) -> str:
-    """Encode plaintext using the Vigenere cipher."""
+def vigenere_encode(plaintext, key):
     key = key.upper()
     result = []
     key_index = 0
@@ -12,13 +11,12 @@ def vigenere_encode(plaintext: str, key: str) -> str:
             result.append(encoded_char)
             key_index += 1
         else:
-            result.append(char)  # Non-alpha characters pass through unchanged
+            result.append(char)
 
     return ''.join(result)
 
 
-def vigenere_decode(ciphertext: str, key: str) -> str:
-    """Decode ciphertext using the Vigenere cipher."""
+def vigenere_decode(ciphertext, key):
     key = key.upper()
     result = []
     key_index = 0
