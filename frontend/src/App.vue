@@ -12,11 +12,25 @@ const keyPlaceholder = computed(() =>
 )
 
 async function encrypt() {
-  await run('encrypt')
+  if (cipherType.value === 'vigenere') {
+    const res = await fetch(`http://127.0.0.1:8000/txt2vigenere/${message.value}/${key.value}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    const data = await res.json()
+    output.value = data.result
+  }
 }
 
 async function decrypt() {
-  await run('decrypt')
+  if (cipherType.value === 'vigenere') {
+    const res = await fetch(`http://127.0.0.1:8000/vigenere2txt/${message.value}/${key.value}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    const data = await res.json()
+    output.value = data.result
+  }
 }
 
 async function run(mode) {
