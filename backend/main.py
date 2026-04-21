@@ -1,10 +1,20 @@
 from fastapi import FastAPI
+import db
 
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+
+@app.get("/users")
+def get_users():
+    data = db.read_json()
+    return data["users"]
+
+
+@app.get("/comments")
+def get_users():
+    data = db.read_json()
+    return data["comments"]
+
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):
