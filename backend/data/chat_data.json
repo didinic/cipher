@@ -1,0 +1,52 @@
+{
+    "users": {
+        "user1": {
+            "id": "1",
+            "username": "test",
+            "password": "test1",
+            "user_key": "123",
+            "user_friends": {
+                "user2": {
+                    "personal_key": "456"
+                }
+            },
+            "comments": [
+                "comment1"
+
+            ]
+                  
+        },
+        "user2": {
+            "id": "2",
+            "username": "test2",
+            "password": "test1",
+            "user_key": "456",
+            "user_friends": {
+                "user1": {
+                    "personal_key": "123"
+                }
+            },
+            "comments": [
+                "comment2"
+            ]
+        }
+    },
+    "comments": {
+        "comment1" : {
+
+            "id": "1",
+            "plain_text": "this is a test comment",
+            "encrypt_text": ""
+
+
+        },
+        "comment2" : {
+            "id": "2",
+            "plain_text": "this is a other test comment",
+            "encrypt_text": ""
+
+
+        }
+
+    }
+}
