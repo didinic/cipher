@@ -1,9 +1,16 @@
 from fastapi import FastAPI
 import db
 import vigenere
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 #login
 @app.post("/login")
@@ -16,7 +23,11 @@ def login_user(username: str, password: str):
                 "username": user["username"], 
                 "friends_user": user["user_friends"]
             }   
-    return "User doesn't exist or invalid credentials"
+    return {
+
+       "message": "User doesn't exist or invalid credentials"
+        
+    }
 
 
 
@@ -32,13 +43,14 @@ def get_comments():
     return data["comments"]
 
 @app.post("/comment")
-def create_comment_encrypt (comment: str, key: str): 
+def create_comment_encrypt (comment: str, author: str, key: str): 
     data = db.read_json()
     encrypt_message = vigenere.vigenere_encode(comment, key)
     new_id = len(data["comments"]) + 1
     comment_key = f"comment{new_id}"
     new_comment = {
         "id": str(new_id),
+        "author": author,
         "plain_text": comment, 
         "encrypt_text":encrypt_message
     }
@@ -47,7 +59,11 @@ def create_comment_encrypt (comment: str, key: str):
 
     db.write_json(data)
     
-    return "ok"
+    return {
+        "message": "ok"
+    } 
+
+    
 
 @app.post("/decrypt")
 def decrypt_comment (key: str, comment_id: str):
@@ -59,7 +75,11 @@ def decrypt_comment (key: str, comment_id: str):
             comment_decrypt = vigenere.vigenere_decode (comment_crypt, key)
             return comment_decrypt
                     
-    return "not found"
+    return {
+
+        "message": "not found"
+    } 
+
 
 
 
