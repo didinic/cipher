@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 import db
 import vigenere
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware
+)
 
 #login
 @app.post("/login")
@@ -32,13 +35,14 @@ def get_comments():
     return data["comments"]
 
 @app.post("/comment")
-def create_comment_encrypt (comment: str, key: str): 
+def create_comment_encrypt (comment: str, author: str, key: str): 
     data = db.read_json()
     encrypt_message = vigenere.vigenere_encode(comment, key)
     new_id = len(data["comments"]) + 1
     comment_key = f"comment{new_id}"
     new_comment = {
         "id": str(new_id),
+        "author": author,
         "plain_text": comment, 
         "encrypt_text":encrypt_message
     }
