@@ -1,8 +1,22 @@
 from fastapi import FastAPI
 import db
 import vigenere
+
 app = FastAPI()
 
+
+#login
+@app.post("/login")
+def login_user(username: str, password: str):
+    data = db.read_json()
+    for user in data["users"].values():
+        if user["username"] == username and user["password"] == password :
+            return {
+                "message": "login successful",
+                "username": user["username"], 
+                "friends_user": user["user_friends"]
+            }   
+    return "User doesn't exist or invalid credentials"
 
 
 
