@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import db
 import vigenere
+import caesar
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -11,6 +12,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/txt2vigenere/{text}/{key}")
+def txt2vigenere(text: str, key: str):
+    return {"result": vigenere.vigenere_encode(text, key)}
+
+@app.get("/vigenere2txt/{text}/{key}")
+def vigenere2txt(text: str, key: str):
+    return {"result": vigenere.vigenere_decode(text, key)}
+
+@app.get("/txt2caesar/{text}/{shift}")
+def txt2caesar(text: str, shift: int):
+    return {"result": caesar.encode_caesar(text, shift)}
+
+@app.get("/vigenere2txt/{text}/{shift}")  
+def caesar2txt(text: str, shift: int):
+    return {"result": caesar.decode_caesar(text, shift)}
 
 #login
 @app.post("/login")
