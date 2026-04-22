@@ -23,7 +23,11 @@ def login_user(username: str, password: str):
                 "username": user["username"], 
                 "friends_user": user["user_friends"]
             }   
-    return "User doesn't exist or invalid credentials"
+    return {
+
+       "message": "User doesn't exist or invalid credentials"
+        
+    }
 
 
 
@@ -55,7 +59,11 @@ def create_comment_encrypt (comment: str, author: str, key: str):
 
     db.write_json(data)
     
-    return "ok"
+    return {
+        "message": "ok"
+    } 
+
+    
 
 @app.post("/decrypt")
 def decrypt_comment (key: str, comment_id: str):
@@ -67,7 +75,11 @@ def decrypt_comment (key: str, comment_id: str):
             comment_decrypt = vigenere.vigenere_decode (comment_crypt, key)
             return comment_decrypt
                     
-    return "not found"
+    return {
+
+        "message": "not found"
+    } 
+
 
 
 
