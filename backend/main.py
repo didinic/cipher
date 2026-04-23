@@ -15,11 +15,11 @@ app.add_middleware(
 
 @app.get("/txt2vigenere/{text}/{key}")
 def txt2vigenere(text: str, key: str):
-    return {"result": vigenere.vigenere_encode(text, key)}
+    return {"result": vigenere.vigenere_encode(text, key, encode=True)}
 
 @app.get("/vigenere2txt/{text}/{key}")
 def vigenere2txt(text: str, key: str):
-    return {"result": vigenere.vigenere_decode(text, key)}
+    return {"result": vigenere.vigenere_encode(text, key, encode=False)}
 
 @app.get("/txt2caesar/{text}/{shift}")
 def txt2caesar(text: str, shift: int):
