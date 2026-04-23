@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 import db
 import vigenere
 import caesar
@@ -13,6 +14,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+class CommentRequest (BaseModel): 
+    comment: str
+    author: str
+    key: str
+
+class DecryptRequest (BaseModel):
+    comment_id: str
+    key: str
+
+#guest
 @app.get("/txt2vigenere/{text}/{key}")
 def txt2vigenere(text: str, key: str):
     return {"result": vigenere.vigenere_encode(text, key, encode=True)}
@@ -29,29 +44,35 @@ def txt2caesar(text: str, shift: int):
 def caesar2txt(text: str, shift: int):
     return {"result": caesar.decode_caesar(text, shift)}
 
+@app.get("/txt2vigenere/{text}/{key}")
+def txt2vigenere(text: str, key: str):
+    encoded_text = vigenere.vigenere_encode(text, key)
+    return {"encoded_text": encoded_text}
+
+@app.get("/vigenere2txt/{ciphertext}/{key}")
+def vigenere2txt(ciphertext: str, key: str):
+    decoded_text = vigenere.vigenere_decode(ciphertext, key)
+    return {"decoded_text": decoded_text}
+
 #login
 @app.post("/login")
-def login_user(username: str, password: str):
-    data = db.read_json()
-    for user in data["users"].values():
-        if user["username"] == username and user["password"] == password :
+def login_user(data: LoginRequest):
+    username = data.username
+    password = data.password
+
+    data_db = db.read_json()
+
+    for user in data_db["users"].values():
+        if user["username"] == username and user["password"] == password:
             return {
                 "message": "login successful",
-                "username": user["username"], 
+                "username": user["username"],
                 "friends_user": user["user_friends"]
-            }   
+            }
+
     return {
-
-       "message": "User doesn't exist or invalid credentials"
-        
+        "message": "User doesn't exist or invalid credentials"
     }
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 #social-media
@@ -65,19 +86,15 @@ def get_comments():
     data = db.read_json()
     return data["comments"]
 
-@app.get("/txt2vigenere/{text}/{key}")
-def txt2vigenere(text: str, key: str):
-    encoded_text = vigenere.vigenere_encode(text, key)
-    return {"encoded_text": encoded_text}
-
-@app.get("/vigenere2txt/{ciphertext}/{key}")
-def vigenere2txt(ciphertext: str, key: str):
-    decoded_text = vigenere.vigenere_decode(ciphertext, key)
-    return {"decoded_text": decoded_text}
 @app.post("/comment")
-def create_comment_encrypt (comment: str, author: str, key: str): 
+def create_comment_encrypt (data: CommentRequest): 
+    
+    comment = data.comment
+    key = data.key
+    author = data.author
+    
     data = db.read_json()
-    encrypt_message = vigenere.vigenere_encode(comment, key)
+    encrypt_message = vigenere.vigenere_encode(comment, key, True)
     new_id = len(data["comments"]) + 1
     comment_key = f"comment{new_id}"
     new_comment = {
@@ -98,13 +115,17 @@ def create_comment_encrypt (comment: str, author: str, key: str):
     
 
 @app.post("/decrypt")
-def decrypt_comment (key: str, comment_id: str):
+def decrypt_comment (data: DecryptRequest):
+    
+    comment_id = data.comment_id
+    key = data.key
+    
     data = db.read_json()
     
     for comment in data["comments"].values():
         if comment["id"] == comment_id:
             comment_crypt = comment["encrypt_text"]
-            comment_decrypt = vigenere.vigenere_decode (comment_crypt, key)
+            comment_decrypt = vigenere.vigenere_encode (comment_crypt, key, False)
             return comment_decrypt
                     
     return {
