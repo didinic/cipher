@@ -4,6 +4,8 @@ from pydantic import BaseModel
 import db
 import vigenere
 import caesar
+from fastapi import HTTPException
+
 
 app = FastAPI()
 app.add_middleware(
@@ -70,9 +72,10 @@ def login_user(data: LoginRequest):
                 "friends_user": user["user_friends"]
             }
 
-    return {
-        "message": "User doesn't exist or invalid credentials"
-    }
+    return HTTPException(
+        status_code=401,
+        detail="User doesn't exist or invalid credentials"
+    )
 
 
 #social-media

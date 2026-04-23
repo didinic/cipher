@@ -21,10 +21,19 @@ const router = createRouter({
             path: '/messageboard',
             name: 'messageboard',
             component: messageboard,
+            meta: { requiresAuth: true }
         },
     ]
 
 
+})
+
+router.beforeEach((to, from) => {
+  const isAuth = localStorage.getItem('isAuth') === 'true'
+
+  if (to.meta.requiresAuth && !isAuth) {
+    return '/login'
+  }
 })
 
 export default router

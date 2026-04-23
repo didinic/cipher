@@ -1,9 +1,11 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 const username = ref('')
 const password = ref('')
 const output = ref('')
 const error = ref('')
+const router = useRouter()
 
 async function login() {
 
@@ -31,8 +33,12 @@ async function login() {
 
         if (!res.ok) {
             error.value = data.message || 'Login failed'
+            localStorage.removeItem('isAuth')
         } else {
             output.value = 'Login successful'
+            localStorage.setItem('isAuth', 'true')
+
+            router.push('/messageboard')
         }
 
 
@@ -68,6 +74,8 @@ async function login() {
             <button @click="login">
                 LOGIN
             </button>
+
+            <p v-if="error">{{ error }}</p>
 
         </div>
 
