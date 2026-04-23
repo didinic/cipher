@@ -69,6 +69,7 @@ def login_user(data: LoginRequest):
             return {
                 "message": "login successful",
                 "username": user["username"],
+                "user_key": user["user_key"],
                 "friends_user": user["user_friends"]
             }
 

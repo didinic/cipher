@@ -67,6 +67,12 @@
             "author": "anonymous",
             "plain_text": "sss",
             "encrypt_text": "cde"
+        },
+        "comment8": {
+            "id": "8",
+            "author": "test",
+            "plain_text": "hello!",
+            "encrypt_text": "rpxvz!"
         }
     }
 }
