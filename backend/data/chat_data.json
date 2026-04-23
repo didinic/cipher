@@ -61,6 +61,12 @@
             "author": "test",
             "plain_text": "test",
             "encrypt_text": "dped"
+        },
+        "comment7": {
+            "id": "7",
+            "author": "anonymous",
+            "plain_text": "sss",
+            "encrypt_text": "cde"
         }
     }
 }

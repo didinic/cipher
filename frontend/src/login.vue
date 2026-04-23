@@ -34,14 +34,15 @@ async function login() {
         const data = await res.json()
 
         if (!res.ok) {
-            error.value = data.detail || data.message || 'Login failed'
+            error.value = data.message || 'Login failed'
             localStorage.removeItem('isAuth')
-            return
-        }
+        } else {
+            output.value = 'Login successful'
+            localStorage.setItem('isAuth', 'true')
+             localStorage.setItem('username', data.username)
 
-        output.value = 'Login successful'
-        localStorage.setItem('isAuth', 'true')
-        router.push('/messageboard')
+            router.push('/messageboard')
+        }
 
 
         console.log(data)
