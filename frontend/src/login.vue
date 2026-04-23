@@ -39,7 +39,8 @@ async function login() {
         } else {
             output.value = 'Login successful'
             localStorage.setItem('isAuth', 'true')
-             localStorage.setItem('username', data.username)
+            localStorage.setItem('username', data.username)
+            localStorage.setItem('user_key', data.user_key)
 
             router.push('/messageboard')
         }

@@ -11,8 +11,8 @@ const postSuccess = ref('')
 
 // New comment form
 const newComment = ref('')
-const newKey = ref('')
 const loggedInUser = localStorage.getItem('username') || 'anonymous'
+const userKey = localStorage.getItem('user_key') || ''
 
 // Per-comment decrypt state: { [id]: { key, result, error, loading } }
 const decryptState = ref({})
@@ -20,6 +20,7 @@ const decryptState = ref({})
 function logout() {
     localStorage.removeItem('isAuth')
     localStorage.removeItem('username')
+    localStorage.removeItem('user_key')
     router.push('/login')
 }
 
@@ -39,8 +40,8 @@ async function postComment() {
     postError.value = ''
     postSuccess.value = ''
 
-    if (!newComment.value.trim() || !newKey.value.trim()) {
-        postError.value = 'All fields are required.'
+    if (!newComment.value.trim()) {
+        postError.value = 'Message cannot be empty.'
         return
     }
 
@@ -51,7 +52,7 @@ async function postComment() {
             body: JSON.stringify({
                 comment: newComment.value,
                 author: loggedInUser,
-                key: newKey.value
+                key: userKey
             })
         })
 
@@ -62,7 +63,6 @@ async function postComment() {
 
         postSuccess.value = 'Message posted and encrypted.'
         newComment.value = ''
-        newKey.value = ''
         await fetchComments()
     } catch (e) {
         postError.value = 'Network error.'
@@ -138,9 +138,6 @@ onMounted(() => {
 
             <label>Message</label>
             <textarea v-model="newComment" placeholder="Write your plaintext message..." />
-
-            <label>Encryption key</label>
-            <input v-model="newKey" placeholder="Vigenère keyword e.g. RIVERCAT" />
 
             <div class="actions">
                 <button @click="postComment">ENCRYPT &amp; POST</button>
