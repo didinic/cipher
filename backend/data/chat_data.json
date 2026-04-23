@@ -55,6 +55,12 @@
             "author": "test",
             "plain_text": "test",
             "encrypt_text": "mikm"
+        },
+        "comment6": {
+            "id": "6",
+            "author": "test",
+            "plain_text": "test",
+            "encrypt_text": "dped"
         }
     }
 }
