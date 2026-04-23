@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed } from 'vue'
-
 const message = ref('')
 const key = ref('')
 const cipherType = ref('vigenere')
@@ -12,43 +11,36 @@ const keyPlaceholder = computed(() =>
 )
 
 async function encrypt() {
-  if (cipherType.value === 'vigenere') {
-    const res = await fetch(`http://127.0.0.1:8000/txt2vigenere/${message.value}/${key.value}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-    const data = await res.json()
-    output.value = data.result
+  output.value = ''
+  error.value = ''
+  try {
+    if (cipherType.value === 'vigenere') {
+      const res = await fetch(`http://127.0.0.1:8000/txt2vigenere/${message.value}/${key.value}`)
+      const data = await res.json()
+      output.value = data.result
+    } else if (cipherType.value === 'caesar') {
+      const res = await fetch(`http://127.0.0.1:8000/txt2caesar/${message.value}/${key.value}`)
+      const data = await res.json()
+      output.value = data.result
+    }
+  } catch (e) {
+    error.value = 'Could not reach server'
   }
 }
 
 async function decrypt() {
-  if (cipherType.value === 'vigenere') {
-    const res = await fetch(`http://127.0.0.1:8000/vigenere2txt/${message.value}/${key.value}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-    const data = await res.json()
-    output.value = data.result
-  }
-}
-
-async function run(mode) {
   output.value = ''
   error.value = ''
   try {
-    const res = await fetch(`/api/${mode}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text: message.value,
-        key: key.value,
-        cipher: cipherType.value
-      })
-    })
-    const data = await res.json()
-    if (data.error) error.value = data.error
-    else output.value = data.result
+    if (cipherType.value === 'vigenere') {
+      const res = await fetch(`http://127.0.0.1:8000/vigenere2txt/${message.value}/${key.value}`)
+      const data = await res.json()
+      output.value = data.result
+    } else if (cipherType.value === 'caesar') {
+      const res = await fetch(`http://127.0.0.1:8000/caesar2txt/${message.value}/${key.value}`)
+      const data = await res.json()
+      output.value = data.result
+    }
   } catch (e) {
     error.value = 'Could not reach server'
   }

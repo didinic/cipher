@@ -25,7 +25,7 @@ def vigenere2txt(text: str, key: str):
 def txt2caesar(text: str, shift: int):
     return {"result": caesar.encode_caesar(text, shift)}
 
-@app.get("/vigenere2txt/{text}/{shift}")  
+@app.get("/caesar2txt/{text}/{shift}")  
 def caesar2txt(text: str, shift: int):
     return {"result": caesar.decode_caesar(text, shift)}
 
