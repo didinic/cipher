@@ -1,8 +1,8 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import db
 import vigenere
 import caesar
-from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 app.add_middleware(
@@ -46,6 +46,12 @@ def login_user(username: str, password: str):
         
     }
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 #social-media
@@ -59,6 +65,15 @@ def get_comments():
     data = db.read_json()
     return data["comments"]
 
+@app.get("/txt2vigenere/{text}/{key}")
+def txt2vigenere(text: str, key: str):
+    encoded_text = vigenere.vigenere_encode(text, key)
+    return {"encoded_text": encoded_text}
+
+@app.get("/vigenere2txt/{ciphertext}/{key}")
+def vigenere2txt(ciphertext: str, key: str):
+    decoded_text = vigenere.vigenere_decode(ciphertext, key)
+    return {"decoded_text": decoded_text}
 @app.post("/comment")
 def create_comment_encrypt (comment: str, author: str, key: str): 
     data = db.read_json()
@@ -96,7 +111,5 @@ def decrypt_comment (key: str, comment_id: str):
 
         "message": "not found"
     } 
-
-
 
 
