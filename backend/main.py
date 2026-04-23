@@ -72,7 +72,7 @@ def login_user(data: LoginRequest):
                 "friends_user": user["user_friends"]
             }
 
-    return HTTPException(
+    raise HTTPException(
         status_code=401,
         detail="User doesn't exist or invalid credentials"
     )

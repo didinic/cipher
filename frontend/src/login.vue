@@ -13,7 +13,7 @@ async function login() {
         output.value = ''
         error.value = ''
 
-         if (!username.value || !password.value) {
+        if (!username.value || !password.value) {
             error.value = 'All fields are required'
             return
         }
@@ -28,18 +28,20 @@ async function login() {
                 password: password.value
             })
         })
-        
+
+        console.log(res)
+
         const data = await res.json()
 
         if (!res.ok) {
-            error.value = data.message || 'Login failed'
+            error.value = data.detail || data.message || 'Login failed'
             localStorage.removeItem('isAuth')
-        } else {
-            output.value = 'Login successful'
-            localStorage.setItem('isAuth', 'true')
-
-            router.push('/messageboard')
+            return
         }
+
+        output.value = 'Login successful'
+        localStorage.setItem('isAuth', 'true')
+        router.push('/messageboard')
 
 
         console.log(data)
@@ -57,7 +59,7 @@ async function login() {
 
 
 
-</script >
+</script>
 
 <template>
 
