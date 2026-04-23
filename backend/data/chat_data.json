@@ -12,9 +12,7 @@
             },
             "comments": [
                 "comment1"
-
             ]
-                  
         },
         "user2": {
             "id": "2",
@@ -32,21 +30,25 @@
         }
     },
     "comments": {
-        "comment1" : {
-
+        "comment1": {
             "id": "1",
             "plain_text": "this is a test comment",
             "encrypt_text": ""
-
-
         },
-        "comment2" : {
+        "comment2": {
             "id": "2",
             "plain_text": "this is a other test comment",
             "encrypt_text": ""
-
-
+        },
+        "comment3": {
+            "id": "3",
+            "plain_text": "hola",
+            "encrypt_text": "rzxk"
+        },
+        "comment4": {
+            "id": "4",
+            "plain_text": "test",
+            "encrypt_text": "dped"
         }
-
     }
 }
