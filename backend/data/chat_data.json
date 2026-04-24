@@ -2,7 +2,7 @@
     "users": {
         "user1": {
             "id": "1",
-            "username": "test",
+            "username": "user1",
             "password": "test1",
             "user_key": "123",
             "user_friends": {
@@ -16,7 +16,7 @@
         },
         "user2": {
             "id": "2",
-            "username": "test2",
+            "username": "user2",
             "password": "test1",
             "user_key": "456",
             "user_friends": {
@@ -73,6 +73,18 @@
             "author": "test",
             "plain_text": "hello!",
             "encrypt_text": "rpxvz!"
+        },
+        "comment9": {
+            "id": "9",
+            "author": "test",
+            "plain_text": "testing testing !!!",
+            "encrypt_text": "dpedtzq eqceuxr !!!"
+        },
+        "comment10": {
+            "id": "10",
+            "author": "user2",
+            "plain_text": "hello",
+            "encrypt_text": "usayc"
         }
     }
 }
