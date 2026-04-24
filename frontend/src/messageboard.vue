@@ -8,6 +8,7 @@ const comments = ref([])
 const error = ref('')
 const postError = ref('')
 const postSuccess = ref('')
+const friends = ref(JSON.parse(localStorage.getItem('friends') || '{}'))
 
 // New comment form
 const newComment = ref('')
@@ -127,6 +128,16 @@ onMounted(() => {
             <span class="brand">CIPHERBOARD / MESSAGES</span>
             <button @click="logout">LOGOUT</button>
         </div>
+
+<section v-if="Object.keys(friends).length > 0" class="friends-section">
+    <h2>// FRIENDS</h2>
+    <div class="friends-list">
+        <div v-for="(info, name) in friends" :key="name" class="friend-card">
+            <span class="author">{{ name }}</span>
+            <span class="friend-key">key: {{ info.personal_key }}</span>
+        </div>
+    </div>
+</section>
 
         <h1>MESSAGE BOARD</h1>
         <p class="subtitle">All messages are Vigenère-encrypted. Supply the correct key to read them.</p>
@@ -432,5 +443,33 @@ textarea:focus {
 
 .small {
     font-size: 0.78rem;
+}
+
+.friends-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.friends-list {
+    display: flex;
+    flex-direction: row;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.friend-card {
+    border: 1px solid #333;
+    padding: 0.5rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 120px;
+}
+
+.friend-key {
+    font-size: 0.75rem;
+    color: #888;
+    letter-spacing: 0.05em;
 }
 </style>
