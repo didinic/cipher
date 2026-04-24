@@ -15,7 +15,6 @@ const newComment = ref('')
 const loggedInUser = localStorage.getItem('username') || 'anonymous'
 const userKey = localStorage.getItem('user_key') || ''
 
-// Per-comment decrypt state: { [id]: { key, result, error, loading } }
 const decryptState = ref({})
 
 function logout() {
@@ -135,6 +134,15 @@ onMounted(() => {
         <div v-for="(info, name) in friends" :key="name" class="friend-card">
             <span class="author">{{ name }}</span>
             <span class="friend-key">key: {{ info.personal_key }}</span>
+        </div>
+    </div>
+</section>
+<section class="user-key-section">
+    <h2>// YOUR KEY</h2>
+    <div class="friends-list">
+        <div class="friend-card">
+            <span class="author">{{ loggedInUser }}</span>
+            <span class="friend-key">key: {{ userKey }}</span>
         </div>
     </div>
 </section>
@@ -472,4 +480,6 @@ textarea:focus {
     color: #888;
     letter-spacing: 0.05em;
 }
+
+
 </style>
